@@ -131,9 +131,7 @@ public class ArrayList<E> implements List<E> {
         if (size >= elements.length) {
             E[] temp = elements;
             elements = (E[]) Array.newInstance(classType,size + size >> 1);
-            for(int i=0; i<temp.length; i++) {
-                elements[i] = temp[i];
-            }
+            System.arraycopy(temp, 0, elements, 0, temp.length);
         }
         elements[size] = e;
         size++;
@@ -206,15 +204,11 @@ public class ArrayList<E> implements List<E> {
         }
         E[] temp = elements;
         if (size >= elements.length) {
-            elements = (E[]) Array.newInstance(classType, size+size/2);
+            elements = (E[]) Array.newInstance(classType, size+size>>1);
         }
-        for(int i=0; i<index; i++) {
-            elements[i] = temp[i];
-        }
+        System.arraycopy(temp, 0, elements, 0, index);
         elements[index] = e;
-        for(int i=index+1; i<size+1; i++) {
-            elements[i] = temp[i - 1];
-        }
+        System.arraycopy(temp, index, elements, index + 1, size -index );
         size++;
     }
 
@@ -232,9 +226,7 @@ public class ArrayList<E> implements List<E> {
             throw new IndexOutOfBoundsException();
         }
         E previous = elements[index];
-        for(int i=index; i<size-1; i++) {
-            elements[i] = elements[i+1];
-        }
+        System.arraycopy(elements, index + 1, elements, index, size - 1 - index);
         elements[size-1] = null;
         size--;
         return previous;
