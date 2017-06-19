@@ -50,12 +50,9 @@ public class ArrayList<E> implements List<E> {
      *
      * @param o 指定元素
      * @return true若集合包含指定的元素
-     * @throws ClassCastException   指定元素的类型不符合
-     * @throws NullPointerException 指定元素为null，而该集合不允许null元素
      */
     @Override
     public boolean contains(Object o) {
-
         return indexOf(o) != -1;
     }
 
@@ -81,7 +78,7 @@ public class ArrayList<E> implements List<E> {
          */
         @Override
         public boolean hasNext() {
-            return cursor < size;
+            return cursor != size;
         }
 
         /**
@@ -114,7 +111,7 @@ public class ArrayList<E> implements List<E> {
          */
         @Override
         public void remove() {
-            if (canRemove == false) {
+            if (!canRemove) {
                 throw  new IllegalStateException();
             }
             ArrayList.this.remove(--cursor);
@@ -128,17 +125,12 @@ public class ArrayList<E> implements List<E> {
      * @param e 指定的元素
      * @return true若集合发生变化
      * @throws UnsupportedOperationException 若该集合不支持<tt>add</tt>操作
-     * @throws NullPointerException          若指定的元素为null，而集合不允许null元素
      */
     @Override
     public boolean add(E e) {
-        if (e == null) {
-            throw new NullPointerException();
-        }
-
         if (size >= elements.length) {
             E[] temp = elements;
-            elements = (E[]) Array.newInstance(classType,size + size / 2);
+            elements = (E[]) Array.newInstance(classType,size + size >> 1);
             for(int i=0; i<temp.length; i++) {
                 elements[i] = temp[i];
             }
@@ -153,18 +145,9 @@ public class ArrayList<E> implements List<E> {
      *
      * @param o 指定元素
      * @return true若集合某一元素被删除
-     * @throws ClassCastException            指定元素类型不符合
-     * @throws NullPointerException          指定元素为null，而集合不允许null元素
-     * @throws UnsupportedOperationException 若该集合不支持此操作
      */
     @Override
     public boolean remove(Object o) {
-        if (o == null) {
-            throw new NullPointerException();
-        }
-        if (!classType.isInstance(o)) {
-            throw  new ClassCastException();
-        }
         boolean removed = false;
         int indexFound = indexOf(o);
         if (indexFound != -1) {
@@ -197,14 +180,10 @@ public class ArrayList<E> implements List<E> {
      * @param e     指定元素
      * @return 指定位置上替换前的元素
      * @throws UnsupportedOperationException 该列表不支持此操作
-     * @throws NullPointerException          指定元素为null，而列表不支持null元素
      * @throws IndexOutOfBoundsException     指定索引越界
      */
     @Override
     public E set(int index, E e) {
-        if (e == null) {
-            throw new NullPointerException();
-        }
         if (index < 0 || index >= size) {
             throw new IndexOutOfBoundsException();
         }
@@ -218,14 +197,10 @@ public class ArrayList<E> implements List<E> {
      *
      * @param index 指定的索引
      * @param e     指定的元素
-     * @throws NullPointerException      指定元素为null，而列表不支持null元素
      * @throws IndexOutOfBoundsException 指定索引越界
      */
     @Override
     public void add(int index, E e) {
-        if (e == null) {
-            throw new NullPointerException();
-        }
         if (index < 0 || index > size) {
             throw new IndexOutOfBoundsException();
         }
@@ -270,34 +245,25 @@ public class ArrayList<E> implements List<E> {
      *
      * @param o 指定元素
      * @return 第一次出现的索引位置，－1若列表不包含该元素
-     * @throws ClassCastException   指定元素类型不合要求
-     * @throws NullPointerException 指定元素为null，而列表不支持null元素
      */
     @Override
     public int indexOf(Object o) {
-        if (o == null) {
-            throw new NullPointerException();
-        }
         int indexFirstAppear = -1;
-        for(int i=0; i<size; i++) {
-            if (elements[i].equals(o)) {
-                indexFirstAppear = i;
-                break;
+        if (o == null) {
+            for(int i=0; i<size; i++) {
+                if (elements[i] == null) {
+                    indexFirstAppear = i;
+                    break;
+                }
+            }
+        }else {
+            for (int i = 0; i < size; i++) {
+                if (elements[i].equals(o)) {
+                    indexFirstAppear = i;
+                    break;
+                }
             }
         }
         return indexFirstAppear;
-    }
-
-    public static void main(String[] args) {
-        ArrayList<Integer> list = new ArrayList<Integer>(Integer.class);
-        System.out.println(list.size());
-        System.out.println(list.isEmpty());
-        list.add(1);
-        System.out.println(list.size());
-        System.out.println(list.isEmpty());
-        list.add(0, 2);
-        System.out.println(list.get(0));
-        list.remove(0);
-        System.out.println(list.remove(new Integer(1)));
     }
 }
