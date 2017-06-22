@@ -151,7 +151,7 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public boolean add(E e) {
-        LinkNode<E> newNode = new LinkNode<>(null,e, null);
+        final LinkNode<E> newNode = new LinkNode<>(null,e, null);
         if (head == null) {
             head = tail = newNode;
         }else {
