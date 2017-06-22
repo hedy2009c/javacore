@@ -4,7 +4,6 @@ import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -32,7 +31,9 @@ public class ArrayListTest {
     public void contains() throws Exception {
         ArrayList<Integer> arrayList = new ArrayList<>(Integer.class);
         arrayList.add(1);
+        arrayList.add(null);
         assertEquals(true, arrayList.contains(1));
+        assertEquals(true, arrayList.contains(null));
     }
 
     @Test
@@ -43,6 +44,7 @@ public class ArrayListTest {
         Iterator<Integer> iterator = arrayList.iterator();
         while (iterator.hasNext()) {
             Integer next = iterator.next();
+            System.out.println(next);
             iterator.remove();
         }
         assertEquals(true, arrayList.isEmpty());
@@ -50,11 +52,11 @@ public class ArrayListTest {
 
     @Test
     public void add() throws Exception {
-        ArrayList<Integer> arrayList = new ArrayList<>(Integer.class, 1024*1024*10);
-        for(int i=0; i<1024*1024*10; i++) {
-            arrayList.add(i);
-            assertEquals(new Integer(i), arrayList.get(i));
-        }
+        ArrayList<Integer> arrayList = new ArrayList<>(Integer.class);
+        arrayList.add(1);
+        arrayList.add(null);
+        assertEquals(new Integer(1), arrayList.get(0));
+        assertEquals(null, arrayList.get(1));
     }
 
     @Test
@@ -100,14 +102,13 @@ public class ArrayListTest {
     public void indexOf() throws Exception {
         ArrayList<Integer> arrayList = new ArrayList<>(Integer.class);
         arrayList.add(1);
-        assertEquals(0, arrayList.indexOf(new Integer(1)));
+        assertEquals(0, arrayList.indexOf(1));
     }
 
     /**
      * 引用数组的特性
      * A[] a = new SubA[]{};
      * SubA[] 类型的父类为Object
-     * @throws Exception
      */
     @Test
     public void testArray() throws  Exception {
