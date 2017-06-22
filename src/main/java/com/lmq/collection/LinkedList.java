@@ -124,7 +124,7 @@ public class LinkedList<E> implements List<E> {
         }
     }
 
-    private void unLink(LinkNode<E> x) {
+    private E unLink(LinkNode<E> x) {
         LinkNode<E> prevNode = x.prev;
         LinkNode<E> nextNode = x.next;
         if (prevNode == null) {// x is headNode
@@ -141,6 +141,7 @@ public class LinkedList<E> implements List<E> {
             x.next = null;
         }
         size--;
+        return x.element;
     }
 
     /**
@@ -202,7 +203,7 @@ public class LinkedList<E> implements List<E> {
     @Override
     public E get(int index) {
         rangeCheck(index);
-        LinkNode<E> node = geteLinkNode(index);
+        LinkNode<E> node = getLinkNode(index);
         return node.element;
     }
 
@@ -211,7 +212,7 @@ public class LinkedList<E> implements List<E> {
      * @param index
      * @return
      */
-    private LinkNode<E> geteLinkNode(int index) {
+    private LinkNode<E> getLinkNode(int index) {
         // 确保index合法
         if (index < (size >> 1)) {
             LinkNode<E> x = head;
@@ -245,10 +246,10 @@ public class LinkedList<E> implements List<E> {
     @Override
     public E set(int index, E e) {
         rangeCheck(index);
-        LinkNode<E> node = geteLinkNode(index);
-        E previous = node.element;
+        LinkNode<E> node = getLinkNode(index);
+        E oldValue = node.element;
         node.element = e;
-        return previous;
+        return oldValue;
     }
 
     /**
@@ -261,7 +262,7 @@ public class LinkedList<E> implements List<E> {
     @Override
     public void add(int index, E e) {
         rangeCheckAdd(index);
-        LinkNode<E> node = geteLinkNode(index);
+        LinkNode<E> node = getLinkNode(index);
 
         LinkNode<E> newNode = new LinkNode<>(null, e, null);
         if (index == 0) {//在链表头新增节点
@@ -303,11 +304,8 @@ public class LinkedList<E> implements List<E> {
     @Override
     public E remove(int index) {
         rangeCheck(index);
-        LinkNode<E> node = geteLinkNode(index);
-        unLink(node);
-        E previousElement = node.element;
-        node = null;
-        return previousElement;
+        LinkNode<E> node = getLinkNode(index);
+        return unLink(node);
     }
 
     /**
@@ -318,9 +316,6 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public int indexOf(Object o) {
-        if (isEmpty()) {
-            return -1;
-        }
         LinkNode<E> node = head;
         int indexFound = -1;
         if (o == null) {
@@ -334,7 +329,7 @@ public class LinkedList<E> implements List<E> {
             }
         }else {
             for(int i=0; i<size; i++) {
-                if (node.element.equals(o)) {
+                if (o.equals(node.element)) {
                     indexFound = i;
                     break;
                 }else {
