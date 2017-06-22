@@ -206,12 +206,26 @@ public class LinkedList<E> implements List<E> {
         return node.element;
     }
 
+    /**
+     * 返回指定索引处节点引用
+     * @param index
+     * @return
+     */
     private LinkNode<E> geteLinkNode(int index) {
-        LinkNode<E> node = head;
-        for(int i=1; i<=index; i++) {
-            node = node.next;
+        // 确保index合法
+        if (index < (size >> 1)) {
+            LinkNode<E> x = head;
+            for(int i=0; i<index; i++) {
+                x = x.next;
+            }
+            return x;
+        }else {
+            LinkNode<E> x = tail;
+            for(int i=size - 1; i > index; i--) {
+                x = x.prev;
+            }
+            return x;
         }
-        return node;
     }
 
     private void rangeCheck(int index) {
