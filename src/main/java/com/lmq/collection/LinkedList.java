@@ -174,35 +174,22 @@ public class LinkedList<E> implements List<E> {
      */
     @Override
     public boolean remove(Object o) {
-        boolean find = false;
-        if (!isEmpty()) {
-            LinkNode<E> node = head;
-            if (o == null) {
-                do {
-                    if (node.element == null) {
-                        find = true;
-                        break;
-                    }else {
-                        node = node.next;
-                    }
-                }while (node != null);
-            }else {
-                while (node != null) {
-                    if (node.element.equals(o)) {
-                        find = true;
-                        break;
-                    }else {
-                        node = node.next;
-                    }
+        if (o == null) {
+            for (LinkNode<E> x = head; x != null; x = x.next) {
+                if (x.element == null) {
+                    unLink(x);
+                    return true;
                 }
             }
-
-            if (find) {
-                unLink(node);
-                node = null;
+        } else {
+            for (LinkNode<E> x = head; x != null; x = x.next) {
+                if (o.equals(x.element)) {
+                    unLink(x);
+                    return true;
+                }
             }
         }
-        return find;
+        return false;
     }
 
     /**
