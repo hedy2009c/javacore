@@ -62,6 +62,8 @@ public class LinkedListTest {
         Assert.assertEquals(true, removeSuc);
         Assert.assertEquals(0, linkedList.size());
         Assert.assertEquals(true, linkedList.isEmpty());
+        linkedList.add(null);
+        linkedList.remove(null);
     }
 
     @Test
@@ -114,13 +116,16 @@ public class LinkedListTest {
     public void indexOf() throws Exception {
         LinkedList<Integer> linkedList = new LinkedList<>();
         linkedList.add(1);
+        linkedList.add(null);
         linkedList.add(2);
-        Assert.assertEquals(1, linkedList.indexOf(2));
+        Assert.assertEquals(2, linkedList.indexOf(2));
     }
 
     @Test
     public void test() throws  Exception {
         java.util.LinkedList<Integer> linkedList = new java.util.LinkedList<>();
+        linkedList.add(null);
+        Assert.assertEquals(null, linkedList.get(0));
 
     }
 
