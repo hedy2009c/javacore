@@ -120,7 +120,6 @@ public class LinkedList<E> implements List<E> {
 
             unLink(lastRet);
             lastRet = null;
-            size--;
             canRemove = false;
         }
     }
@@ -141,6 +140,7 @@ public class LinkedList<E> implements List<E> {
             nextNode.prev = prevNode;
             x.next = null;
         }
+        size--;
     }
 
     /**
@@ -200,7 +200,6 @@ public class LinkedList<E> implements List<E> {
             if (find) {
                 unLink(node);
                 node = null;
-                size--;
             }
         }
         return find;
@@ -307,7 +306,6 @@ public class LinkedList<E> implements List<E> {
         unLink(node);
         E previousElement = node.element;
         node = null;
-        size--;
         return previousElement;
     }
 
